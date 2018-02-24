@@ -1,5 +1,5 @@
 # cbpi-DependentActor
-This is a CraftBeerPi 3 plugin that provides a new actor type called DependentActor. DependentActors are containers for existing *Base Actors*, which will only power on if their *Actor Dependency* is in the correct state (either ON if a prerequisite, or OFF if a restriction).
+This CraftBeerPi 3.0 plugin provides a new actor type called DependentActor. DependentActors are containers for existing Base Actors, which will only power ON if their Actor Dependency is in the correct state. The Actor Dependency must be ON if it is set as a prerequisite, and OFF if it is set as a restriction.
 
 A DependentActor, can even use some other DependentActor as a base or dependency.
 
