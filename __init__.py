@@ -37,6 +37,7 @@ class DependentActor(ActorBase):
                 elif (value.state == 1) & (self.dependency_type == "Prerequisite"):
                     self.api.switch_actor_on(int(self.base), power=power)
                 else:
+                    self.api.switch_actor_off(int(self.base))
                     if self.timeout > 0.0:
                         self.api.notify(headline="Powering of actor prevented", message="This is due to the current power state of it's dependency, %s" % (dependency_name), timeout=self.timeout, type="danger")
                     raise UserWarning("Powering of actor prevented by the state of it's dependency")
