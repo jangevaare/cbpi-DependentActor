@@ -7,6 +7,7 @@ class DependentActor(ActorBase):
     base = Property.Actor(label="Base Actor", description="Select the actor you would like to add a dependency to.")
     dependency_type = Property.Select(label="Dependency Type", options=["Restriction", "Prerequisite"], description="Select the dependency type. With 'Restriction', the 'Actor Dependency' is required to be OFF in order to switch the 'Base Actor' ON. With 'Prerequisite', the 'Actor Dependency' is required to be ON in order to switch the 'Base Actor' ON.")
     dependency = Property.Actor(label="Actor Dependency", description="Select the actor that the base actor will depend upon.")
+    timeout = Property.Number("Notification duration (ms)", True, 5000, description="0ms will disable notifications completely")
 
     def init(self):
         # Make sure the Base Actor is off
@@ -36,5 +37,7 @@ class DependentActor(ActorBase):
                 elif (value.state == 1) & (self.dependency_type == "Prerequisite"):
                     self.api.switch_actor_on(int(self.base), power=power)
                 else:
-                    self.api.notify(headline="Powering of actor prevented", message="This is due to the current power state of it's dependency, %s" % (dependency_name), timeout=None, type="danger")
+                    self.api.switch_actor_off(int(self.base))
+                    if self.timeout > 0.0:
+                        self.api.notify(headline="Powering of actor prevented", message="This is due to the current power state of it's dependency, %s" % (dependency_name), timeout=self.timeout, type="danger")
                     raise UserWarning("Powering of actor prevented by the state of it's dependency")
